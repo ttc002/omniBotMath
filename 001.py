@@ -19,7 +19,6 @@ class math_bot:
         return [V1,V2,V3]
 
     def sum_vectors(self,vectors):
-        print(vectors)
         x_sum = 0
         y_sum = 0
         for length, angle in vectors:
@@ -39,7 +38,7 @@ class math_bot:
         y = round(vector[0] * math.sin(math.radians(vector[1])))
         return x,y
 
-    def coords_to_vector(coords_from,coords_to):
+    def coords_to_vector(self,coords_from,coords_to):
         move_x = coords_to[0] - coords_from[0]
         move_y = coords_to[1] - coords_from[1]
         ang = 0
@@ -52,20 +51,19 @@ class math_bot:
         print(f"Len - {module}. Angle - {angle}")
         return [module,angle]
 
-    def add_rot(steps,angle,steps_per_rot,diametr_wheel,bot_radius):
-        steps_per_degree =  (steps_per_rot/(math.pi*diametr_wheel)) 
+    def add_rot(self,steps,angle,steps_per_rot,diametr_wheel,bot_radius):
+        pass
 
     def count_bot_steps(self, coords_request, ang_request):
         """
         передаётся: координаты конца движения, угол на который робот должен повернуться
         возвращается: шаги в виде списка вида [колесо1, колесо2, колесо3]
         """
-        
         ang_move = (self.angle - ang_request)%360
-        vector_move = coords_to_vector(self.coords, coords_request)
-        divided_vectors = divide_vector(vector_move)
+        vector_move = self.coords_to_vector(self.coords, coords_request)
+        divided_vectors = self.divide_vector(vector_move)
         print("vectors:",divided_vectors)
-        k_count_vector = sum_vectors([[divided_vectors[0],0],[divided_vectors[1],60],[divided_vectors[2],120]])
+        k_count_vector = self.sum_vectors([[divided_vectors[0],0],[divided_vectors[1],60],[divided_vectors[2],120]])
         if k_count_vector[1] != vector_move[1]:
             print("VECTOR SUMMING ERROR")
             print("Sum:",k_count_vector)
@@ -73,16 +71,21 @@ class math_bot:
             return [0,0,0]
         k = vector_move[0] / k_count_vector[0]
         print("K:",k)
-        steps = divide_vector(vector_move,k = k)
+        steps = self.divide_vector(vector_move,k = k)
         print("steps:",steps)
+        self.coords = coords_request
+        self.angle = ang_request
+        return steps
+
 
 if __name__ == "__main__":
-    a = input("coords now: ").split()
-    a[0] = int(a[0])
-    a[1] = int(a[1])
+    #a = input("coords now: ").split()
+    #a[0] = int(a[0])
+    #a[1] = int(a[1])
     b = input("coords req: ").split()
     b[0] = int(b[0])
     b[1] = int(b[1])
-    c = 0#int(input("ang now: "))
-    d = 0#int(input("ang req: "))
-    print(count_bot_steps(a,b,c,d))
+    #c = 0 int(input("ang now: "))
+    d = int(input("ang req: "))
+    botik = math_bot(200,50,800)
+    print(botik.count_bot_steps(b,d))
