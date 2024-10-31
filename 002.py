@@ -14,16 +14,9 @@ class math_bot:
         ang_rad = math.radians(vector[1])
         V = vector[0]
         vectors = [None,None,None]
-        vectors[0] = [round(k * V * math.cos(ang_rad)),0]
-        vectors[1] = [round(k * V * math.cos(math.radians(210)-ang_rad)),210]
-        vectors[2] = [round(k * V * math.cos(math.radians(150)-ang_rad)),150]
-        print("Before rotating",vectors)
-        for i in range(3):
-            if vectors[i][0] < 0:
-                vectors[i][1] += 180
-                vectors[i][1] = vectors[i][1]%360
-                vectors[i][0] = abs(vectors[i][0])
-        print("After rotting",vectors)
+        vectors[0] = [V * math.cos(ang_rad),0]
+        VNX = self.sum_vectors([vectors[1],vectors[2],[vectors[0][0],(vectors[0][1]+180)%360)
+    
         return vectors
 
     def sum_vectors(self,vectors):
