@@ -32,7 +32,7 @@ class math_bot:
         for length, angle in vectors:
             x_sum += length * math.cos(math.radians(angle))
             y_sum += length * math.sin(math.radians(angle))
-        print("Sums:",x_sum,y_sum)
+        #print("Sums:",x_sum,y_sum)
         result_length = round(math.sqrt(x_sum**2 + y_sum**2),2)
         result_angle = abs(round(math.degrees(math.atan2(y_sum, x_sum)),2))
         return [result_length, result_angle]
@@ -72,8 +72,8 @@ class math_bot:
         divided_vectors = self.divide_vector(vector_move)
         print("vectors:",divided_vectors)
         k_count_vector = self.sum_vectors(divided_vectors)
-
-        print(k_count_vector)
+        
+        print("Summed Vectors:",k_count_vector)
 
 if __name__ == "__main__":
     #a = input("coords now: ").split()
