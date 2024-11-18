@@ -15,8 +15,8 @@ class math_bot:
         V = vector[0]
         vectors = [None,None,None]
         vectors[0] = [round(k * V * math.cos(ang_rad)),0]
-        vectors[1] = [round(k * V * math.cos(math.radians(210)-ang_rad)),210]
-        vectors[2] = [round(k * V * math.cos(math.radians(150)-ang_rad)),150]
+        vectors[1] = [round(k * V * math.cos(math.radians(240)-ang_rad)),240]
+        vectors[2] = [round(k * V * math.cos(math.radians(120)-ang_rad)),120]
         print("Before rotating",vectors)
         for i in range(3):
             if vectors[i][0] < 0:
@@ -34,7 +34,7 @@ class math_bot:
             y_sum += length * math.sin(math.radians(angle))
         print("Sums:",x_sum,y_sum)
         result_length = round(math.sqrt(x_sum**2 + y_sum**2),2)
-        result_angle = abs(round(math.degrees(math.atan2(y_sum, x_sum)),2))
+        result_angle = abs(round(math.degrees(math.atan2(y_sum, x_sum))))
         return [result_length, result_angle]
 
     def vector_to_coords(self,vector):
@@ -55,7 +55,7 @@ class math_bot:
             ang = 180
         module = math.sqrt((coords_from[0]-coords_to[0])**2 + (coords_from[1] - coords_to[1])**2)
         angle = ang + math.degrees(math.atan2(abs(move_y) , abs(move_x)))
-        angle = round(angle%360,2)
+        angle = round(angle%360)
         print(f"Len - {module}. Angle - {angle}")
         return [module,angle]
 
