@@ -10,20 +10,23 @@ class math_bot:
         self.coords = [0,0]
         self.angle = 0
         
-    def divide_vector(self,vector, k = 1):
+    def divide_vector(self,vector, k = 1,rotating = True):
         ang_rad = math.radians(vector[1])
         V = vector[0]
         vectors = [None,None,None]
-        vectors[0] = [round(k * V * math.cos(ang_rad)),0]
-        vectors[1] = [round(k * V * math.cos(math.radians(240)-ang_rad)),240]
-        vectors[2] = [round(k * V * math.cos(math.radians(120)-ang_rad)),120]
+        vectors[0] = [round(k * V * math.cos(ang_rad),3),0]
+        vectors[1] = [round(k * V * math.cos(math.radians(240)-ang_rad),3),240]
+        vectors[2] = [round(k * V * math.cos(math.radians(120)-ang_rad),3),120]
         print("Before rotating",vectors)
-        for i in range(3):
-            if vectors[i][0] < 0:
-                vectors[i][1] += 180
-                vectors[i][1] = vectors[i][1]%360
-                vectors[i][0] = abs(vectors[i][0])
-        print("After rotting",vectors)
+        if rotating:
+            for i in range(3):
+                if vectors[i][0] < 0:
+                    vectors[i][1] += 180
+                    vectors[i][1] = vectors[i][1]%360
+                    vectors[i][0] = abs(vectors[i][0])
+            print("After rotting",vectors)
+        else:
+            print("NO Rotating")
         return vectors
 
     def sum_vectors(self,vectors):
@@ -33,7 +36,7 @@ class math_bot:
             x_sum += length * math.cos(math.radians(angle))
             y_sum += length * math.sin(math.radians(angle))
         print("Sums:",x_sum,y_sum)
-        result_length = round(math.sqrt(x_sum**2 + y_sum**2),2)
+        result_length = round(math.sqrt(x_sum**2 + y_sum**2),3)
         result_angle = abs(round(math.degrees(math.atan2(y_sum, x_sum))))
         return [result_length, result_angle]
 
@@ -50,10 +53,16 @@ class math_bot:
         move_x = coords_to[0] - coords_from[0]
         move_y = coords_to[1] - coords_from[1]
         ang = 0
-        print(move_x,move_y)
-        if move_x < 0 or move_y < 0:
-            ang = 180
-        module = math.sqrt((coords_from[0]-coords_to[0])**2 + (coords_from[1] - coords_to[1])**2)
+        print("move X,Y: ",move_x,move_y)
+        if move_x < 0:
+            ang += 90
+            print("adding 180")
+        if move_y < 0:
+            ang += 90
+            print("adding 180")
+
+
+        module = math.sqrt(abs(move_x)**2 + abs(move_y)**2)
         angle = ang + math.degrees(math.atan2(abs(move_y) , abs(move_x)))
         angle = round(angle%360)
         print(f"Len - {module}. Angle - {angle}")
@@ -79,7 +88,7 @@ class math_bot:
             return [0,0,0]
         k = vector_move[0] / k_count_vector[0]
         print("K:",k)
-        steps = self.divide_vector(vector_move,k = k)
+        steps = self.divide_vector(vector_move,k = k,rotating = False)
         print("steps:",steps)
         self.coords = coords_request
         self.angle = ang_request
