@@ -7,10 +7,14 @@ class math_bot:
     def __init__(self, bot_radius_mm,diametr_wheel_mm,steps_per_rot):
         self.steps_per_mm = steps_per_rot/(math.pi*diametr_wheel_mm)
         self.steps_per_degree = (bot_radius_mm*2*math.pi*self.steps_per_mm)/360
+        print(self.steps_per_mm)
         self.coords = [0,0]
-        self.angle = 0
-        
+        self.angle = 0        
     def divide_vector(self,vector, k = 1,rotating = True):
+        """"
+        input: vectors list(3 vectors);  k - coefficient; rotating vector for length = natural number
+        output: vectors [[len,0],[len,120],[len,240]]
+        """
         ang_rad = math.radians(vector[1])
         V = vector[0]
         vectors = [None,None,None]
@@ -30,6 +34,10 @@ class math_bot:
         return vectors
 
     def sum_vectors(self,vectors):
+        """
+        input: vectors [[len,angle],.....]
+        output: [len,angle]
+        """
         x_sum = 0
         y_sum = 0
         for length, angle in vectors:
@@ -70,6 +78,11 @@ class math_bot:
 
     def add_rot(self,steps,angle,steps_per_rot,diametr_wheel,bot_radius):
         pass
+    def mm_to_steps(self,mm):
+        steps = [0,0,0]
+        for i in range(3):
+            steps[i] = mm[i] * self.steps_per_mm
+        return steps
 
     def count_bot_steps(self, coords_request, ang_request):
         """
@@ -88,10 +101,11 @@ class math_bot:
             return [0,0,0]
         k = vector_move[0] / k_count_vector[0]
         print("K:",k)
-        steps = self.divide_vector(vector_move,k = k,rotating = False)
-        print("steps:",steps)
+        wheel_mm = self.divide_vector(vector_move,k = k,rotating = False)
+        print("wheel mm:",wheel_mm)
         self.coords = coords_request
         self.angle = ang_request
+        steps = mm_to_steps(wheel_mm)
         return steps
 
 
