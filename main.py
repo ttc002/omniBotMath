@@ -51,7 +51,7 @@ class math_bot:
             y_sum += length * math.sin(math.radians(angle))
         print("Sums:",x_sum,y_sum)
         result_length = round(math.sqrt(x_sum**2 + y_sum**2),3)
-        result_angle = abs(round(math.degrees(math.atan2(y_sum, x_sum))))
+        result_angle = abs(round(math.degrees(math.atan2(y_sum, x_sum)),3))
         return [result_length, result_angle]
 
     def vector_to_coords(self,vector):
@@ -92,8 +92,7 @@ class math_bot:
         for i in range(3):
             steps += step
         return steps
-        
-    
+         
     def mm_to_steps(self,mm):
         steps = [0,0,0]
         for i in range(3):
@@ -101,7 +100,11 @@ class math_bot:
             steps[i] = mm[i] * self.steps_per_mm
             
         return steps
-
+    def mm_to_speed(time, steps):
+        """
+        input: time; steps
+        output: speed(mm/s)
+        """
     def count_bot_steps(self, coords_request, ang_request):
         """
         передаётся: координаты конца движения, угол на который робот должен повернуться
@@ -112,7 +115,7 @@ class math_bot:
         divided_vectors = self.divide_vector(vector_move)
         print("vectors:",divided_vectors)
         k_count_vector = self.sum_vectors(divided_vectors)
-        if k_count_vector[1] != vector_move[1]:
+        if abs(k_count_vector[1] - vector_move[1])>=0.1:
             print("VECTOR SUMMING ERROR")
             print("Sum:",k_count_vector)
             print("In:",vector_move)
@@ -120,6 +123,7 @@ class math_bot:
         k = vector_move[0] / k_count_vector[0]
         print("K:",k)
         wheel_mm = self.divide_vector(vector_move,k = k,rotating = False,degrees = False)
+
         print("wheel mm:",wheel_mm)
         self.coords = coords_request
         self.angle = ang_request
