@@ -12,7 +12,7 @@ class math_bot:
     def divide_vector(self,vector, k = 1,rotating = True,degrees = True):
         """"
         input: vectors list(3 vectors);  k - coefficient; rotating vector for length = natural number
-        output: vectors [[len,0],[len,120],[len,240]]
+        output: vectors [[len,0],[len,120],[len,240]] or vectors [len,len,len]
         """
         ang_rad = math.radians(vector[1])
         V = vector[0]
